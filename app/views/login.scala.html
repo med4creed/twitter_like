@@ -1,0 +1,43 @@
+@(
+	msglogin:String, 
+	loginForm: Form[ApplicationAuthentification.Login]
+)
+
+@import helper._ 
+
+@main("@msgLogin"){
+        
+        @form(routes.ApplicationAuthentification.login()) {
+            
+            
+            
+         
+            @if(flash.contains("success")) {
+                <p class="success">
+                    @flash.get("success")
+                </p>
+            }
+
+            <div class="well" style="margin-top:100px;"> 
+            <div class="row">
+            
+            <div class="span5 offset1">
+            
+			<h2>Se connecter</h2>
+            <input type="text" name="mail" placeholder="Email/Pseudo"><br />
+            <input type="password" name="mdp" placeholder="Mot de passe"><br />
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+            </div>
+            
+            <div class="span5">
+            
+			<h3>Vous n'avez pas de compte ?</h3>
+
+            <a href="#" style="padding-left: 105px"><button type="submit" class="btn btn-success btn-large">S'inscrire !</button></a>
+            </div>
+            
+            </div>
+            </div>
+        }
+}
+        

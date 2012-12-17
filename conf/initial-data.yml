@@ -1,0 +1,101 @@
+# Utilisateurs
+utilisateurs:
+    - !!models.Utilisateur
+        id: 1
+        pnom: Guillaume
+        nom: Bort
+        pseudo: bobo
+        mail: guillaume@sample.com        
+        mdp: 1234
+       # msgs: 
+       # users:
+                  
+    - !!models.Utilisateur
+        id: 2
+        pnom: Maxime
+        nom: Dantec
+        pseudo: dodo
+        mail: maxime@sample.com
+        mdp: 1234
+       # msgs:
+        
+    - !!models.Utilisateur
+        id: 3
+        pnom: Sadek
+        nom: Drobi
+        pseudo: soso
+        mail: sadek@sample.com
+        mdp: 1234
+       # msgs:
+        
+    - !!models.Utilisateur
+        id: 4
+        pnom: Sadek
+        nom: Erwan
+        pseudo: lolo
+        mail: erwan@sample.com
+        mdp: 1234
+    
+# Groupes
+
+groupes:
+    - !!models.Groupe
+        id: 1
+        nomGroupe: med4creed
+        userAdmin: !!models.Utilisateur
+                 id: 1
+    - !!models.Groupe
+        id: 2
+        nomGroupe: peace and love        
+        userAdmin: !!models.Utilisateur
+                 id: 1
+        
+    - !!models.Groupe
+        id: 3
+        nomGroupe: la vie est belle
+        userAdmin: !!models.Utilisateur
+                 id: 2
+    - !!models.Groupe
+        id: 4
+        nomGroupe: lol
+        userAdmin: !!models.Utilisateur
+                 id: 2
+    - !!models.Groupe
+        id: 5
+        nomGroupe: fuck the police
+        userAdmin: !!models.Utilisateur
+                 id: 3
+
+# Messages
+
+messages:
+    - !!models.Message
+        id: 1
+        msg:  Fix the documentation
+        user: !!models.Utilisateur
+                id: 1  
+    - !!models.Message
+        id: 2
+        msg: Prepare the beta release
+        user: !!models.Utilisateur
+                id: 1   
+    - !!models.Message
+        id: 3
+        msg: Buy some milk
+        user: !!models.Utilisateur
+                id: 2   
+    - !!models.Message
+        id: 4
+        msg: Check 1.2.4-RC2
+        user: !!models.Utilisateur
+                id: 2   
+    - !!models.Message
+        id: 5
+        msg: Finish zenMessage integration
+        user: !!models.Utilisateur
+                id: 3 
+    - !!models.Message
+        id: 6
+        msg: Release the secret Groupe
+        user: !!models.Utilisateur
+                id: 4              

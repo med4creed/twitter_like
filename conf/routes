@@ -1,0 +1,39 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.ApplicationAuthentification.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+
+#Ressources
+GET     /messages								controllers.ApplicationMessages.getAllMessages()
+GET		/messages/utilisateur/:idUser			controllers.ApplicationMessages.getAllMessagesByUserId(idUser:Long)
+GET     /messages/asuivre						controllers.ApplicationMessages.getMsgUsersASuivre()
+GET     /messages/:idMsg						controllers.ApplicationMessages.getMessageById(idMsg:Long)
+POST	/messages/:idMsg/delete					controllers.ApplicationMessages.deleteMessageById(idMsg:Long)
+POST	/messages/create						controllers.ApplicationMessages.newMessage()
+
+
+GET     /utilisateurs							controllers.ApplicationUtilisateurs.getAllUtilisateurs()
+GET     /utilisateurs/:idUser					controllers.ApplicationUtilisateurs.getUtilisateurById(idUser:Long)
+PUT		/utilisateurs/:idUser					controllers.ApplicationUtilisateurs.updateUtilisateurById(idUser:Long)
+POST	/utilisateurs/:idUser/delete			controllers.ApplicationUtilisateurs.deleteUtilisateurById(idUser:Long)
+POST	/utilisateurs/create					controllers.ApplicationUtilisateurs.newUtilisateur()
+
+GET     /groupes								controllers.ApplicationGroupes.getAllGroupes()
+GET     /groupes/:idGrp							controllers.ApplicationGroupes.getGroupeById(idGrp:Long)
+GET		/groupes/utilisateur/:idUser			controllers.ApplicationGroupes.getAllGroupesByUserId(idUser:Long)
+PUT		/groupes/:idGrp							controllers.ApplicationGroupes.updateGroupeById(idGrp:Long)
+POST	/groupes/:idGrp/delete					controllers.ApplicationGroupes.deleteGroupeById(idGrp:Long)
+POST	/groupes/create							controllers.ApplicationGroupes.newGroupe()
+POST	/groupe/:idGrp/rejoindre				controllers.ApplicationGroupes.joinGroupe(idGrp:Long)
+
+GET 	/login 									controllers.ApplicationAuthentification.index()
+POST 	/login 									controllers.ApplicationAuthentification.login()
+GET 	/logout									controllers.ApplicationAuthentification.logout()
+
+

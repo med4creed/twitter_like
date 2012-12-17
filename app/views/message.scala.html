@@ -1,0 +1,105 @@
+@(
+	msgs :List[Message], 
+	msgForm :Form[Message]
+) 
+
+@import helper._
+
+@main("Messages") {
+
+<h4>@msgs.size() message(s)</h4>
+
+
+<div class="container">
+
+ <div class="row">
+
+ 	<div class="span3">
+ 		 
+ 		  <div class="well sidebar-nav fixed">  
+            <ul class="nav nav-list">  
+              <li class="nav-header">Mon compte :</li>  
+              <li class=""><a href="#">Afficher</a></li>
+              <li class=""><a href="#">Supprimer</a></li>
+              <li class="nav-header">Message :</li>  
+              <li><a href="/followers">Tous mes messages</a></li>
+              <li><a href="/messages">Tous les messages</a></li>
+              <li><a href="/messages#ancre">Poster un message</a></li>
+              
+              <li class="nav-header">Follow :</li>  
+              <li><a href="/utilisateurs">Lister</a></li>
+           </ul>  
+          </div>
+ 		
+ 	</div>
+
+	<div class="span9">
+	
+	<div class="row" >
+	<div class="well" > 
+	<!-- zone pour écrire un msg et le publier -->
+	@form(routes.ApplicationMessages.newMessage()) { 
+		<h4 id="ancre">Publiez votre message :</h4>
+		<input class="input-xxlarge" type="text" placeholder="Votre message ici" name="msg">
+		<button type="submit" class="btn btn-primary btn-block">Twitter !</button>
+	}
+	</div>
+	</div>
+	
+	<div class="row">
+	<div class="well"> 
+	<!-- affichage des msgs publiées -->
+	@for(msg <- msgs) { 
+	
+	
+	<strong>@msg.getUser.getPseudo</strong> <em>a ecrit le : </em>@msg.getDateCreation 
+	
+	
+
+		
+		<blockquote>@msg.getMsg<br />
+		<small class="pull-right">Depuis : Paris</small><br>
+		</blockquote>
+		<div class="row">
+		
+		<div class="span1">
+		@form(routes.ApplicationUtilisateurs.getUtilisateurById(msg.getId)) {<input class="btn btn-mini btn-primary" type="submit" value="Afficher profil">}
+		</div>
+		
+		@if(Autorisation.isAdmin()||Autorisation.isOwnerMessge(msg.getId)) {
+		<div class="span1 offset6">
+		@form(routes.ApplicationMessages.deleteMessageById(msg.getId)){
+		<input type="submit" class="btn btn-mini btn-danger" value="Delete"><i class="icon-trash icon-white"></i></input>
+		}
+		</div>
+		}
+		
+		
+		
+		</div>
+	<legend></legend>
+	}
+	</div>
+	</div>
+	
+	
+
+	
+		
+	</div>
+	
+</div>
+
+</div>
+
+<!-- 
+	@for(msg <- msgs) {
+		@msg.getId @msg.getMsg()
+		@form(routes.ApplicationMessages.deleteMessageById(msg.getId)) { 
+		<input type="submit" value="Delete">
+		 }
+	}
+ -->
+
+
+}
