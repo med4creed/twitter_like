@@ -19,7 +19,7 @@ public class Global extends GlobalSettings {
 		Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml
 				.load("initial-data.yml");
 
-		
+		/*
 		if (Ebean.find(Utilisateur.class).findRowCount() == 0) {
 			Logger.info("OK pour les utilisateurs");
 			Ebean.save(all.get("utilisateurs"));
@@ -29,12 +29,14 @@ public class Global extends GlobalSettings {
 			Logger.info("OK pour les groupes");
 			Ebean.save(all.get("groupes"));
 		}
+		
 		Logger.info("avant messages");
 		Logger.info("count messages"+Ebean.find(Message.class).findRowCount());
 		if (Ebean.find(Message.class).findRowCount() == 0) {
 			Logger.info("OK pour les messages");
 			Ebean.save(all.get("messages"));
 		}
+		*/
 		
 		
 //		Utilisateur user = Utilisateur.findUserById(1);

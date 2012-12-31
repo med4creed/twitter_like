@@ -41,7 +41,7 @@ utilisateurs:
 groupes:
     - !!models.Groupe
         id: 1
-        nomGroupe: med4creed
+        nomGroupe: med
         userAdmin: !!models.Utilisateur
                  id: 1
     - !!models.Groupe
@@ -52,7 +52,7 @@ groupes:
         
     - !!models.Groupe
         id: 3
-        nomGroupe: la vie est belle
+        nomGroupe: creed
         userAdmin: !!models.Utilisateur
                  id: 2
     - !!models.Groupe
@@ -62,7 +62,7 @@ groupes:
                  id: 2
     - !!models.Groupe
         id: 5
-        nomGroupe: fuck the police
+        nomGroupe: fuck you
         userAdmin: !!models.Utilisateur
                  id: 3
 

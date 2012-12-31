@@ -1,3 +1,9 @@
+@(
+	user: Utilisateur,
+	userForm :Form[Utilisateur]
+)
+
+@import helper._
 
 @main("Profil") {
 
@@ -10,13 +16,17 @@
  		  <div class="well sidebar-nav fixed">  
             <ul class="nav nav-list">  
               <li class="nav-header">Mon compte :</li>  
-              <li class=""><a href="#">Afficher</a></li>
-              <li class=""><a href="#">Supprimer</a></li>
+              <li class=""><a href="/profil/@(Long.parseLong(session().get("id")))">Afficher</a></li>
               <li class="nav-header">Message :</li>  
-              <li><a href="#">Afficher</a></li>
-              <li><a href="/messages#ancre">Poster un message</a></li>
+              <li><a href="/messages/asuivre">Tous mes messages</a></li>
+              <li><a href="/messages">Tous les messages</a></li>
+              <li><a href="/messages">Poster un message</a></li>
+              <li class="nav-header">Follow :</li>  
+              <li><a href="/utilisateurs">Utilisateurs</a></li>
               <li class="nav-header">Groupe :</li>  
-              <li><a href="#">Rejoindre</a></li>
+              <li><a href="/groupes">Tous les groupes</a></li>
+              <li><a href="/groupes/utilisateur/@(Long.parseLong(session().get("id")))">Mes groupes</a></li>
+               <li><a href="/groupes#creer">Creer un groupe</a></li>
            </ul>  
           </div>
  		
@@ -26,26 +36,38 @@
 	
 	<div class="well"> 
 	
+	<h3>Profil utilisateur :</h3>
 
+	<strong>Pseudo : </strong>@user.getPseudo<br />
+	<strong>Nom : </strong>@user.getNom @user.getPnom<br />
+	<strong>Email : </strong>@user.getMail<br />
+	@user.getUsersFollow<br /><br />@user.getGrps
 	
-	<strong>Pseudo :</strong><br />
-	<strong>Nom :</strong><br />
-	<strong>Email :</strong>
 	
-
+	@if(Autorisation.isAdmin()||Autorisation.isOwnerCompte(user.getId)) {
+		@form(routes.ApplicationUtilisateurs.deleteUtilisateurById(user.getId)){ 
+			<button class="btn btn-danger btn-mini">Supprimer <i class="icon-white icon-trash"></i></button>
+		}	
+	}
+	
 	</div>
-
 	
-	
-
-	
+	@if(Autorisation.isOwnerCompte(user.getId)) {
+	<div class="well"> 
+	<h4>Modifier son compte :</h4>
+	 		@form(routes.ApplicationUtilisateurs.updateUtilisateurById(user.getId)) {
+			<input type="text" name="nom" placeholder="Nom" value="@user.getNom"> <strong>: Nom <br />
+			<input type="text" name="pnom" placeholder="Prenom" value="@user.getPnom"> : Prenom <br />
+			<input type="text" name="pseudo" placeholder="Choisir un pseudo" value="@user.getPseudo"> : Pseudo</strong><br />
+            <button type="submit" class="btn btn-primary">Modifier</button>
+		}
+	</div>
+	}
 		
 	</div>
 	
 </div>
-
 </div>
-
 		
 
 }

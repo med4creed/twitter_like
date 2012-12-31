@@ -35,10 +35,10 @@ public class Message extends Model {
 	@Required
 	@Column(length = 255, nullable = true)
 	private String msg;
-	@Required
+	//@Required
 	@Temporal(TemporalType.DATE)
 	private Date dateCreation = new Date();
-	@Required
+	//@Required
 	@JsonManagedReference
 	@ManyToOne
 	private Utilisateur user;

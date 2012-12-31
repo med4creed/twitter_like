@@ -103,8 +103,7 @@ public class Groupe extends Model {
 
 	// Méthodes CRUD
 
-	public static Finder<Long, Groupe> find = new Finder(Long.class,
-			Groupe.class);
+	public static Finder<Long, Groupe> find = new Finder(Long.class,Groupe.class);
 
 	// Create
 	public static void createGroupe(Groupe grp) {

@@ -5,18 +5,18 @@
 
 @import helper._ 
 
-@main("@msgLogin"){
+@main("Identification"){
         
         @form(routes.ApplicationAuthentification.login()) {
             
             
+            @if(flash.containsKey("success")) {
+        		<div class="alert alert-success"><strong>Validation : </strong> @flash.get("success")</div>
+   			 }
             
-         
-            @if(flash.contains("success")) {
-                <p class="success">
-                    @flash.get("success")
-                </p>
-            }
+            @if(flash.containsKey("error")) {
+        		<div class="alert alert-error"><strong>Erreur : </strong> @flash.get("error")</div>
+    		}
 
             <div class="well" style="margin-top:100px;"> 
             <div class="row">
@@ -24,7 +24,7 @@
             <div class="span5 offset1">
             
 			<h2>Se connecter</h2>
-            <input type="text" name="mail" placeholder="Email/Pseudo"><br />
+            <input type="text" name="mail" placeholder="Votre email"><br />
             <input type="password" name="mdp" placeholder="Mot de passe"><br />
             <button type="submit" class="btn btn-primary">Se connecter</button>
             </div>
@@ -33,7 +33,7 @@
             
 			<h3>Vous n'avez pas de compte ?</h3>
 
-            <a href="#" style="padding-left: 105px"><button type="submit" class="btn btn-success btn-large">S'inscrire !</button></a>
+            <span style="padding-left: 135px"></span></span><a href="/signup" class="btn btn-success btn-large" >S'inscrire</a>
             </div>
             
             </div>

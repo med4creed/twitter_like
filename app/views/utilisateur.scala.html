@@ -1,13 +1,12 @@
 @(
 	users :List[Utilisateur], 
-	userForm :Form[Utilisateur], id:Long
+	userForm :Form[Utilisateur], 
+	id:Long
 ) 
 
 @import helper._
 
 @main("Utilisateurs") {
-
-<h4>@users.size() Utilisateur(s)</h4>
 
 <div class="container">
 
@@ -18,13 +17,17 @@
  		  <div class="well sidebar-nav fixed">  
             <ul class="nav nav-list">  
               <li class="nav-header">Mon compte :</li>  
-              <li class=""><a href= @routes.ApplicationUtilisateurs.getUtilisateurById(id)>Afficher</a></li>
-              <li class=""><a href=@routes.ApplicationUtilisateurs.deleteUtilisateurById(id)>Supprimer</a></li>
+              <li class=""><a href="/profil/@(Long.parseLong(session().get("id")))">Afficher</a></li>
               <li class="nav-header">Message :</li>  
-              <li><a href="routes.ApplicationMessages.getAllMessages()">Afficher</a></li>
-              <li><a href="/messages#ancre">Poster un message</a></li>
+              <li><a href="/messages/asuivre">Tous mes messages</a></li>
+              <li><a href="/messages">Tous les messages</a></li>
+              <li><a href="/messages">Poster un message</a></li>
+              <li class="nav-header">Follow :</li>  
+              <li><a href="/utilisateurs">Utilisateurs</a></li>
               <li class="nav-header">Groupe :</li>  
-              <li><a href="#">Rejoindre</a></li>
+              <li><a href="/groupes">Tous les groupes</a></li>
+              <li><a href="/groupes/utilisateur/@(Long.parseLong(session().get("id")))">Mes groupes</a></li>
+               <li><a href="/groupes#creer">Creer un groupe</a></li>
            </ul>  
           </div>
  		
@@ -37,49 +40,29 @@
 
 	@for(user <- users) { 
 	
-	<strong>Pseudo :</strong> @user.getPseudo() #@user.getId()<br />
-	<strong>Nom :</strong> @user.getPnom()  @user.getNom()<br />
-	<strong>Email :</strong> @user.getMail<br />
-	
-	<a href="#" class="btn btn-mini btn-info">Suivre</i></a>
-	@if(Autorisation.isAdmin()||Autorisation.isOwnerCompte(user.getId)) {
-		@form(routes.ApplicationUtilisateurs.deleteUtilisateurById(user.getId)){ 
-			<input class="btn btn-mini btn-danger" type="submit" value="Delete"><i class="icon-trash icon-red"></i>
+		<strong>Pseudo :</strong> <a href="@routes.ApplicationUtilisateurs.getUtilisateurById(user.getId)"> @user.getPseudo()</a> <br />
+		<strong>Nom :</strong> @user.getPnom()  @user.getNom()<br />
+		<strong>Email :</strong> @user.getMail<br /><br />
+		
+		@if(!Autorisation.isOwnerCompte(user.getId)) {
+		@form(routes.ApplicationUtilisateurs.followUtilisateur(user.getId)){ 
+				<button class="btn btn-primary btn-small"><i class="icon-white icon-plus"></i> Suivre</button>
+			}
 		}
-	}
-		<br /><br />
-	
-	
-	
-	<legend></legend>
+			
+		@if(Autorisation.isAdmin()||Autorisation.isOwnerCompte(user.getId)) {
+			@form(routes.ApplicationUtilisateurs.deleteUtilisateurById(user.getId)){ 
+				<button class="btn btn-danger btn-mini"><i class="icon-white icon-trash"></i></button>
+			}
+		}
+		<legend></legend>
 	}
 	</div>
-
-	
-	
-
-	
-		
 	</div>
-	
+</div>
 </div>
 
-</div>
-
-		
 
 }
-
-
-<!--  <h2>créer un nouveau compte utilisateur</h2>
-@form(routes.ApplicationUtilisateurs.newUtilisateur()) { 
-@inputText(userForm("nom"))
-@inputText(userForm("pnom"))
-@inputText(userForm("pseudo"))
-@inputText(userForm("mail"))
-@inputText(userForm("mdp"))
-<input type="submit" value="Create">
-} 
--->
 
 

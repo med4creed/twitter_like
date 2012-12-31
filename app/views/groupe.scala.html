@@ -1,13 +1,11 @@
 @(
 	groupes :List[Groupe], 
-	groupeForm :Form[Groupe]
+	grpForm :Form[Groupe]
 ) 
 
 @import helper._
 
 @main("Groupes") {
-
-<h4>@groupes.size() Groupe(s)</h4>
 
 <div class="container">
 
@@ -18,76 +16,70 @@
  		  <div class="well sidebar-nav fixed">  
             <ul class="nav nav-list">  
               <li class="nav-header">Mon compte :</li>  
-              <li class=""><a href="#">Afficher</a></li>
-              <li class=""><a href="#">Supprimer</a></li>
+              <li class=""><a href="/profil/@(Long.parseLong(session().get("id")))">Afficher</a></li>
               <li class="nav-header">Message :</li>  
-              <li><a href="#">Afficher</a></li>
-              <li><a href="/messages#ancre">Poster un message</a></li>
+              <li><a href="/messages/asuivre">Tous mes messages</a></li>
+              <li><a href="/messages">Tous les messages</a></li>
+              <li><a href="/messages">Poster un message</a></li>
+              <li class="nav-header">Follow :</li>  
+              <li><a href="/utilisateurs">Utilisateurs</a></li>
               <li class="nav-header">Groupe :</li>  
-              <li><a href="#">Rejoindre</a></li>
+              <li><a href="/groupes">Tous les groupes</a></li>
+              <li><a href="/groupes/utilisateur/@(Long.parseLong(session().get("id")))">Mes groupes</a></li>
+               <li><a href="/groupes#creer">Creer un groupe</a></li>
            </ul>  
           </div>
  		
  	</div>
 
+<div class="row">
 	<div class="span9">
 	
 	<div class="well"> 
-	<h4 id="ancre">Liste de tous les Groupes :</h4><br />
-
-	@for(groupe <- groupes) { 
+		<h4>Liste des groupes :</h4><br />
 	
-	<strong>Nom groupe :</strong> @groupe.getNomGroupe #@groupe.getId()<br />
-	<strong>Admin groupe :</strong> @groupe.getUserAdmin.getPseudo<br />
-	@for(user <- groupe.getMembers()) { 	
-		<strong>pseudo :</strong> @user.getPseudo() #@user.getId()<br />
-	}
-	<strong>list count :</strong> @groupe.getMembers.size()<br />
-	
-	<a href="#" class="btn btn-mini btn-info">Suivre</i></a>
-	@if(Autorisation.isAdmin()||Autorisation.isOwnerGroupe(groupe.getId)) {
-		@form(routes.ApplicationGroupes.deleteGroupeById(groupe.getId)){ 
-			<input class="btn btn-mini btn-danger" type="submit" value="Delete"><i class="icon-trash icon-white"></i>
-		}
-	}
-	@if(session.get("mail")!=groupe.getUserAdmin.getMail){
-		@form(routes.ApplicationGroupes.joinGroupe(groupe.getId)){ 
-			<input class="btn btn-mini" type="submit" value="Join"><i class="icon-trash icon-bleu"></i>
-		}
-	}
-		<br /><br />
+		@for(groupe <- groupes) { 
 		
-	
-	
-	<legend></legend>
-	}
-	</div>
-
-	
-	
-
-	
+		<strong>Nom du groupe :</strong> @groupe.getNomGroupe<br />
+		<strong>Administrateur :</strong> @groupe.getUserAdmin.getPseudo<br />
+		<strong>Membre :</strong> @groupe.getMembers.size()<br />
+		@for(user <- groupe.getMembers()) { 	
+			<strong>pseudo :</strong> @user.getPseudo()<br />
+		}
 		
+		
+		<br /><a href="@routes.ApplicationGroupes.getGroupeById(groupe.getId())" class="btn btn-success btn-mini"><i class="icon-white icon-eye-open"></i> Consulter</a><br ><br />
+		
+		@if(session.get("mail")!=groupe.getUserAdmin.getMail){
+			@form(routes.ApplicationGroupes.joinGroupe(groupe.getId)){ 
+				<button class="btn btn-primary btn-small"><i class="icon-white icon-plus"></i> Rejoindre</button>
+			}
+		}
+		
+		@if(Autorisation.isAdmin()||Autorisation.isOwnerGroupe(groupe.getId)) {
+			@form(routes.ApplicationGroupes.deleteGroupeById(groupe.getId)){ 
+				<button class="btn btn-danger btn-mini"><i class="icon-white icon-trash"></i></button>
+			}
+		}
+		<legend></legend>
+		}
 	</div>
 	
+	<div class="well"> 
+		<h4 id="creer">Creer un nouveau groupe : </h4>
+		@form(routes.ApplicationGroupes.newGroupe()) { 
+			<input  type="text" placeholder="Nom du groupe" name="nomGroupe">
+			<button type="submit" class="btn btn-primary">Creer</button>
+		}
+	</div>
+	
+
+</div>	
 </div>
 
 </div>
-
-		
 
 }
 
-
-<!--  <h2>créer un nouveau compte Groupe</h2>
-@form(routes.ApplicationGroupes.newGroupe()) { 
-@inputText(groupeForm("nom"))
-@inputText(groupeForm("pnom"))
-@inputText(groupeForm("pseudo"))
-@inputText(groupeForm("mail"))
-@inputText(groupeForm("mdp"))
-<input type="submit" value="Create">
-} 
--->
 
 

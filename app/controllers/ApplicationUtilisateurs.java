@@ -7,6 +7,8 @@ import models.Utilisateur;
 
 import org.codehaus.jackson.JsonNode;
 
+import controllers.ApplicationAuthentification.Login;
+
 import play.Logger;
 import play.data.Form;
 import play.libs.Json;
@@ -23,52 +25,51 @@ public class ApplicationUtilisateurs extends Controller {
 	public static Result index() {
 		return redirect(routes.ApplicationUtilisateurs.getAllUtilisateurs());
 	}
+	
 
 	public static Result getAllUtilisateurs() {
-
-		// Autorisation.isAdmin();
-
 		List<Utilisateur> users = Utilisateur.findAllUsers();
 		Long id = Long.parseLong(session().get("id"));
-		if (request().accepts("text/html")) {
-			return ok(views.html.utilisateur.render(users, userForm,id));
-
-		}
-
-		JsonNode resultJson = Json.newObject();
-		resultJson = Json.toJson(users);
-
-		return ok(resultJson);
-
+		return ok(views.html.utilisateur.render(users, userForm,id));
 	}
-
-	public static Result getUtilisateurById(Long idUser) {
-		Utilisateur util = Utilisateur.findUserById(idUser);
-
-//		if (request().accepts("	text/html")) {
-//			return ok(util.toString());
-//		}
-		JsonNode utilJson = Json.newObject();
-		utilJson = Json.toJson(util);
-		return ok(utilJson);
-
-	}
+	
+	 public static Result getUtilisateurById(Long idUser) {
+     Utilisateur util = Utilisateur.findUserById(idUser);
+     return ok(views.html.profil.render(util, userForm));
+	 }
 
 	public static Result newUtilisateur() {
 		Form<Utilisateur> filledForm = userForm.bindFromRequest();
-		Utilisateur user = filledForm.get();
-		Utilisateur.createUser(user);
+		if (filledForm.hasErrors()) {
+			flash("error", "Merci de remplir correctement le formulaire.");
+			return redirect(routes.ApplicationAuthentification.index2());	
+		}
+		else {
+			Utilisateur user = filledForm.get();
+			Utilisateur.createUser(user);
+			return redirect(routes.ApplicationUtilisateurs.getAllUtilisateurs());
+		}
+	}
+	
+	public static Result followUtilisateur(Long idUtilAsuivre){
+		Utilisateur util = Utilisateur.findUserByEmail(session().get("mail"));
+		Utilisateur utilAsuivre =  Utilisateur.findUserById(idUtilAsuivre);
+		Logger.info("##################"+ util);
+		Logger.info(utilAsuivre.getNom());
+		util.setUsersFollow(utilAsuivre);
+		Utilisateur.updateUser(util);
 		return redirect(routes.ApplicationUtilisateurs.getAllUtilisateurs());
+		
 	}
 
 	public static Result updateUtilisateurById(Long idUser) {
-		if (Autorisation.isOwnerCompte(idUser) || Autorisation.isAdmin()) {
-			if (request().accepts("text/html")) {
+		if (Autorisation.isOwnerCompte(idUser))  {
+
 				Form<Utilisateur> filledForm = userForm.bindFromRequest();
 				Utilisateur user = Utilisateur.findUserById(idUser);
 
-				user.setMail(filledForm.data().get("mail"));
-				user.setMdp(filledForm.data().get("mdp"));
+				//user.setMail(filledForm.data().get("mail"));
+				//user.setMdp(filledForm.data().get("mdp"));
 				user.setNom(filledForm.data().get("nom"));
 				user.setPnom(filledForm.data().get("pnom"));
 				user.setPseudo(filledForm.data().get("pseudo"));
@@ -77,19 +78,7 @@ public class ApplicationUtilisateurs extends Controller {
 
 				return redirect(routes.ApplicationUtilisateurs
 						.getAllUtilisateurs());
-			}
-			JsonNode userJson = request().body().asJson();
-			Utilisateur user = Utilisateur.findUserById(idUser);
 
-			user.setMail(userJson.get("mail").getTextValue());
-			user.setMdp(userJson.get("mdp").getTextValue());
-			user.setNom(userJson.get("nom").getTextValue());
-			user.setPnom(userJson.get("pnom").getTextValue());
-			user.setPseudo(userJson.get("pseudo").getTextValue());
-
-			Utilisateur.updateUser(user);
-
-			return ok(Json.toJson(user));
 		} else {
 			return badRequest("you don't have permission for that!!!");
 		}
@@ -97,13 +86,23 @@ public class ApplicationUtilisateurs extends Controller {
 	}
 
 	public static Result deleteUtilisateurById(Long idUser) {
-		if (Autorisation.isOwnerCompte(idUser) || Autorisation.isAdmin()) {
-			Logger.info("jss laaaaa");
+		
+		if (Autorisation.isOwnerCompte(idUser) ) {
+			Utilisateur.deleteUser(idUser);
+			return redirect(routes.ApplicationAuthentification.logout());
+		}
+		
+		else if (Autorisation.isAdmin()) {
 			Utilisateur.deleteUser(idUser);
 			return redirect(routes.ApplicationUtilisateurs.getAllUtilisateurs());
-		} else {
+		} 
+		
+		else {
 			return badRequest("you don't have permission for that!!!");
 		}
+		
 	}
-
+	
 }
+
+

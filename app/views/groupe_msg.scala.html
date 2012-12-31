@@ -1,12 +1,14 @@
 @(
-	msgs :List[Message], 
-	msgForm :Form[Message]
+	groupes : Groupe,
+	msgForm :Form[Message],
+	msgs :List[Message]
 ) 
 
 @import helper._
 
-@main("Messages") {
+@main("Groupes") {
 
+<div class="container">
 
  <div class="row">
 
@@ -31,55 +33,53 @@
  		
  	</div>
 
+<div class="row">
 	<div class="span9">
 	
-	
-	
-	<div class="row" >
+		<div class="row" >
 	<div class="well" > 
+	
 	@if(flash.containsKey("error")) {
         <div class="alert alert-error"><strong>Erreur : </strong> @flash.get("error")</div>
     }
 	
 	<!-- zone pour écrire un msg et le publier -->
-	@form(routes.ApplicationMessages.newMessage()) { 
+	@form(routes.ApplicationGroupes.newMessageGroupe(groupes.getId)) { 
 		<h4">Publiez votre message :</h4>
 		<input class="input-xxlarge" type="text" placeholder="Votre message ici" name="msg">
 		<button type="submit" class="btn btn-primary btn-block">Twitter !</button>
 	}
 	</div>
+	</div>
+	
+	<div class="row" >
+		<div class="well"> 
+			<h4>Message du groupe @groupes.getNomGroupe</h4><br />
+			
+				@for(msg <- msgs) { 
+					<strong>@msg.getUser.getPseudo</strong> <em>a ecrit le : </em>@msg.getDateCreation
+						<blockquote>@msg.getMsg<br /><small class="pull-right">Depuis : Paris</small><br></blockquote>
+							<div class="row">
+								<div class="span2">
+									<a href="@routes.ApplicationUtilisateurs.getUtilisateurById(msg.getUser.getId)" class="btn btn-mini btn-primary">Afficher profil</i></a>
+								</div>
+						
+						@if(Autorisation.isAdmin()||Autorisation.isOwnerMessge(msg.getId)) {
+							<div class="span1 offset5">
+								<a href="/messages/@msg.getId/delete" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i></a>
+							</div>
+						}
+						<br /></div><br /><legend></legend>
+				}
+			
+		</div>	
+	</div>
+	
+	
 
-	</div>
-	
-	<div class="row">
-	<div class="well"> 
-	<!-- affichage des msgs publiées -->
-	@for(msg <- msgs) { 
-	
-		<strong>@msg.getUser.getPseudo</strong> <em>a ecrit le : </em>@msg.getDateCreation
-		<blockquote>@msg.getMsg<br />
-		<small class="pull-right">Depuis : Paris</small><br>
-		</blockquote>
-		<div class="row">
-		
-		<div class="span2">
-		<a href="@routes.ApplicationUtilisateurs.getUtilisateurById(msg.getUser.getId)" class="btn btn-mini btn-primary">Afficher profil</i></a>
-		</div>
-		
-		@if(Autorisation.isAdmin()||Autorisation.isOwnerMessge(msg.getId)) {
-		<div class="span1 offset5">
-		<a href="/messages/@msg.getId/delete" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i></a>
-		</div>
-		}
-		
-		<br /></div><br /><legend></legend>
-	}
-	</div>
-	</div>
-	</div>
+</div>	
+</div>
+
 </div>
 
 }
-
-
-
