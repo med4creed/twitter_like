@@ -29,8 +29,6 @@ public class Utilisateur extends Model {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@SequenceGenerator(name = "seq", initialValue = 100, allocationSize = 100)
-	@GeneratedValue(generator = "seq", strategy = GenerationType.SEQUENCE)
 	private long id;
 	@Required
 	@Column(length = 30, nullable = false)
@@ -43,7 +41,7 @@ public class Utilisateur extends Model {
 	private String pseudo;
 	@Required
 	@Column(nullable = false, unique = true)
-	private String mail;
+	public String mail;
 	@Required
 	@JsonIgnore
 	@Column(length = 30)

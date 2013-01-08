@@ -1,5 +1,9 @@
 package controllers;
 
+import java.io.Console;
+import java.util.List;
+
+import models.Message;
 import models.Utilisateur;
 import play.*;
 import play.data.Form;
@@ -23,9 +27,22 @@ public class Application extends Controller {
 		}
 
 		else {
+			Utilisateur.findUserByEmail("mail");
+			
 			Utilisateur user = filledForm.get();
-			Utilisateur.createUser(user);
-			return redirect(routes.ApplicationUtilisateurs.getAllUtilisateurs());
+
+			Utilisateur verif_mail = Utilisateur.findUserByEmail(user.getMail());
+			Utilisateur verif_pseudo = Utilisateur.findByPseudo(user.getPseudo());
+			
+			if (verif_mail == null && verif_pseudo == null) {
+				Logger.info("Identifiants dispo");
+				Utilisateur.createUser(user);
+				return redirect(routes.ApplicationAuthentification.index());
+			} else {
+				flash("error", "Ces identifiants sont déjà utilisés.");
+				return redirect(routes.ApplicationAuthentification.index2());	
+			}
+				
 		}
 	}
   

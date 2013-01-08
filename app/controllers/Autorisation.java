@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import models.Groupe;
 import models.Message;
 import models.Utilisateur;
@@ -7,6 +9,7 @@ import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
+import views.html.utilisateur;
 
 public class Autorisation extends Security.Authenticator {
 
@@ -69,5 +72,17 @@ public class Autorisation extends Security.Authenticator {
 		Logger.info("Sorry u can't delete the groupe!!!");
 		return false;
 	}
+	
+
+	public static boolean isMemberGroupe(Long idGroupe) {
+		String mail = Context.current().session().get("mail");
+		Groupe grp = Groupe.findGroupeById(idGroupe);
+		if(grp.getMembers().contains(Utilisateur.findUserByEmail(mail))) {
+			Logger.info("Vous êtes membre du groupe");
+			return true;
+		}
+		return false;
+	}
+
 
 }

@@ -64,10 +64,10 @@ public class ApplicationUtilisateurs extends Controller {
 
 	public static Result updateUtilisateurById(Long idUser) {
 		if (Autorisation.isOwnerCompte(idUser))  {
-
+			
 				Form<Utilisateur> filledForm = userForm.bindFromRequest();
 				Utilisateur user = Utilisateur.findUserById(idUser);
-
+				
 				//user.setMail(filledForm.data().get("mail"));
 				//user.setMdp(filledForm.data().get("mdp"));
 				user.setNom(filledForm.data().get("nom"));
@@ -76,8 +76,7 @@ public class ApplicationUtilisateurs extends Controller {
 
 				Utilisateur.updateUser(user);
 
-				return redirect(routes.ApplicationUtilisateurs
-						.getAllUtilisateurs());
+				return redirect(routes.ApplicationUtilisateurs.getUtilisateurById(idUser));
 
 		} else {
 			return badRequest("you don't have permission for that!!!");
@@ -102,6 +101,7 @@ public class ApplicationUtilisateurs extends Controller {
 		}
 		
 	}
+	
 	
 }
 

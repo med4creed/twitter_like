@@ -50,10 +50,10 @@
 		
 		<br /><a href="@routes.ApplicationGroupes.getGroupeById(groupe.getId())" class="btn btn-success btn-mini"><i class="icon-white icon-eye-open"></i> Consulter</a><br ><br />
 		
-		@if(session.get("mail")!=groupe.getUserAdmin.getMail){
-			@form(routes.ApplicationGroupes.joinGroupe(groupe.getId)){ 
-				<button class="btn btn-primary btn-small"><i class="icon-white icon-plus"></i> Rejoindre</button>
-			}
+		@if(!Autorisation.isMemberGroupe(groupe.getId())) {	
+				@form(routes.ApplicationGroupes.joinGroupe(groupe.getId)){ 
+					<button class="btn btn-primary btn-small"><i class="icon-white icon-plus"></i> Rejoindre</button>
+				}
 		}
 		
 		@if(Autorisation.isAdmin()||Autorisation.isOwnerGroupe(groupe.getId)) {

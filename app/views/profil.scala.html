@@ -40,9 +40,7 @@
 
 	<strong>Pseudo : </strong>@user.getPseudo<br />
 	<strong>Nom : </strong>@user.getNom @user.getPnom<br />
-	<strong>Email : </strong>@user.getMail<br />
-	@user.getUsersFollow<br /><br />@user.getGrps
-	
+	<strong>Email : </strong>@user.getMail<br /><br />
 	
 	@if(Autorisation.isAdmin()||Autorisation.isOwnerCompte(user.getId)) {
 		@form(routes.ApplicationUtilisateurs.deleteUtilisateurById(user.getId)){ 
@@ -51,6 +49,7 @@
 	}
 	
 	</div>
+
 	
 	@if(Autorisation.isOwnerCompte(user.getId)) {
 	<div class="well"> 

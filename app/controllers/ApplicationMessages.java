@@ -28,7 +28,8 @@ public class ApplicationMessages extends Controller {
 
 		Logger.info("session= " + session().toString());
 
-		List<Message> msgs = Message.find.orderBy("id DESC").findList();
+		//List<Message> msgs = Message.find.orderBy("id DESC").findList();
+		List<Message> msgs = Message.findAllMsgs();
 
 		if (request().accepts("text/html")) {
 			return ok(views.html.message.render(msgs, msgForm));
@@ -42,14 +43,9 @@ public class ApplicationMessages extends Controller {
 	public static Result getAllMessagesByUserId(Long idUser) {
 
 		List<Message> msgs = Utilisateur.findUserById(idUser).getMsgs();
+		String nom = Utilisateur.findUserById(idUser).getNom();
+		return ok(views.html.message_util.render(msgs, nom));
 
-//		if (request().accepts("text/html")) {
-//			return ok(views.html.message.render(msgs, msgForm));
-//		}
-		JsonNode resultJson = Json.newObject();
-		resultJson = Json.toJson(msgs);
-
-		return ok(resultJson);
 	}
 
 	public static Result getMsgUsersASuivre() {

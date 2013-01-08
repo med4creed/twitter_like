@@ -43,7 +43,7 @@ public class ApplicationGroupes extends Controller {
 
 	public static Result getAllGroupesByUserId(Long idUser) {
 		List<Groupe> groupes = Utilisateur.findUserById(idUser).getGrps();
-		Logger.info(groupes.toString());
+		//Logger.info("#############################"+groupes.get(0).toString());
 		return ok(views.html.groupe.render(groupes, grpForm));
 
 	}

@@ -35,26 +35,28 @@
 
 <div class="row">
 	<div class="span9">
-	
+
+	@if(Autorisation.isOwnerGroupe(groupes.getId) || Autorisation.isMemberGroupe(groupes.getId) ) {	
 		<div class="row" >
-	<div class="well" > 
+		<div class="well" > 
 	
-	@if(flash.containsKey("error")) {
-        <div class="alert alert-error"><strong>Erreur : </strong> @flash.get("error")</div>
-    }
-	
-	<!-- zone pour écrire un msg et le publier -->
-	@form(routes.ApplicationGroupes.newMessageGroupe(groupes.getId)) { 
-		<h4">Publiez votre message :</h4>
-		<input class="input-xxlarge" type="text" placeholder="Votre message ici" name="msg">
-		<button type="submit" class="btn btn-primary btn-block">Twitter !</button>
+		@if(flash.containsKey("error")) {
+	        <div class="alert alert-error"><strong>Erreur : </strong> @flash.get("error")</div>
+	    }
+		
+		
+		<!-- zone pour écrire un msg et le publier -->
+		@form(routes.ApplicationGroupes.newMessageGroupe(groupes.getId)) { 
+			<h4">Publiez votre message :</h4>
+			<input class="input-xxlarge" type="text" placeholder="Votre message ici" name="msg">
+			<button type="submit" class="btn btn-primary btn-block">Twitter !</button>
+		}
+		</div>
+		</div>
 	}
-	</div>
-	</div>
-	
 	<div class="row" >
 		<div class="well"> 
-			<h4>Message du groupe @groupes.getNomGroupe</h4><br />
+			<h4>Message du groupe @groupes.getNomGroupe @groupes.getId</h4><br />
 			
 				@for(msg <- msgs) { 
 					<strong>@msg.getUser.getPseudo</strong> <em>a ecrit le : </em>@msg.getDateCreation
