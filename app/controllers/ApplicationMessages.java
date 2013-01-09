@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import models.Groupe;
 import models.Message;
 import models.Utilisateur;
 import org.codehaus.jackson.JsonNode;
@@ -26,6 +28,7 @@ public class ApplicationMessages extends Controller {
 
 		Logger.info("session= " + session().toString());
 
+		//List<Message> msgs = Message.find.orderBy("id DESC").findList();
 		List<Message> msgs = Message.findAllMsgs();
 
 		if (request().accepts("text/html")) {
@@ -40,20 +43,16 @@ public class ApplicationMessages extends Controller {
 	public static Result getAllMessagesByUserId(Long idUser) {
 
 		List<Message> msgs = Utilisateur.findUserById(idUser).getMsgs();
+		String nom = Utilisateur.findUserById(idUser).getNom();
+		return ok(views.html.message_util.render(msgs, nom));
 
-//		if (request().accepts("text/html")) {
-//			return ok(views.html.message.render(msgs, msgForm));
-//		}
-		JsonNode resultJson = Json.newObject();
-		resultJson = Json.toJson(msgs);
-
-		return ok(resultJson);
 	}
 
 	public static Result getMsgUsersASuivre() {
 
 		Logger.info("getMsgUsersASuivre");
 		Utilisateur user = Utilisateur.findUserByEmail(session().get("mail"));
+		Logger.info("**********************");
 		Logger.info("user " + user.getMail());
 		List<Utilisateur> usersFollow = user.getUsersFollow();
 		Logger.info("users to follow " + usersFollow.toString());
@@ -82,23 +81,21 @@ public class ApplicationMessages extends Controller {
 	}
 
 	public static Result newMessage() {
-		if (request().accepts("text/html")) {
-			Form<Message> filledForm = msgForm.bindFromRequest();
+
+		Form<Message> filledForm = msgForm.bindFromRequest();
+			
+		if (filledForm.hasErrors()) {
+			flash("error", "Merci de remplir le formulaire.");
+		}
+		else {
 			Message msg = filledForm.get();
-			Utilisateur user = Utilisateur.findUserByEmail(session()
-					.get("mail"));
+			Utilisateur user = Utilisateur.findUserByEmail(session().get("mail"));
 			msg.setUser(user);
 			Message.createMsg(msg);
-			return redirect(routes.ApplicationMessages.getAllMessages());
-		}
-		JsonNode msgJson = request().body().asJson();
-		Message msg = Json.fromJson(msgJson, Message.class);
-		msg.setDateCreation(new Date());
-		Message.createMsg(msg);
-
-		return ok(Json.toJson(msg));
-
+		}	
+		return redirect(routes.ApplicationMessages.getAllMessages());
 	}
+	
 
 	public static Result deleteMessageById(Long id) {
 		if (Autorisation.isOwnerMessge(id) || Autorisation.isAdmin()) {

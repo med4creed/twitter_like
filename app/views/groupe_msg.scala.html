@@ -1,0 +1,87 @@
+@(
+	groupes : Groupe,
+	msgForm :Form[Message],
+	msgs :List[Message]
+) 
+
+@import helper._
+
+@main("Groupes") {
+
+<div class="container">
+
+ <div class="row">
+
+ 	<div class="span3">
+ 		 
+ 		  <div class="well sidebar-nav fixed">  
+            <ul class="nav nav-list">  
+              <li class="nav-header">Mon compte :</li>  
+              <li class=""><a href="/profil/@(Long.parseLong(session().get("id")))">Afficher</a></li>
+              <li class="nav-header">Message :</li>  
+              <li><a href="/messages/asuivre">Tous mes messages</a></li>
+              <li><a href="/messages">Tous les messages</a></li>
+              <li><a href="/messages">Poster un message</a></li>
+              <li class="nav-header">Follow :</li>  
+              <li><a href="/utilisateurs">Utilisateurs</a></li>
+              <li class="nav-header">Groupe :</li>  
+              <li><a href="/groupes">Tous les groupes</a></li>
+              <li><a href="/groupes/utilisateur/@(Long.parseLong(session().get("id")))">Mes groupes</a></li>
+               <li><a href="/groupes#creer">Creer un groupe</a></li>
+           </ul>  
+          </div>
+ 		
+ 	</div>
+
+<div class="row">
+	<div class="span9">
+
+	@if(Autorisation.isOwnerGroupe(groupes.getId) || Autorisation.isMemberGroupe(groupes.getId) ) {	
+		<div class="row" >
+		<div class="well" > 
+	
+		@if(flash.containsKey("error")) {
+	        <div class="alert alert-error"><strong>Erreur : </strong> @flash.get("error")</div>
+	    }
+		
+		
+		<!-- zone pour écrire un msg et le publier -->
+		@form(routes.ApplicationGroupes.newMessageGroupe(groupes.getId)) { 
+			<h4">Publiez votre message :</h4>
+			<input class="input-xxlarge" type="text" placeholder="Votre message ici" name="msg">
+			<button type="submit" class="btn btn-primary btn-block">Twitter !</button>
+		}
+		</div>
+		</div>
+	}
+	<div class="row" >
+		<div class="well"> 
+			<h4>Message du groupe @groupes.getNomGroupe @groupes.getId</h4><br />
+			
+				@for(msg <- msgs) { 
+					<strong>@msg.getUser.getPseudo</strong> <em>a ecrit le : </em>@msg.getDateCreation
+						<blockquote>@msg.getMsg<br /><small class="pull-right">Depuis : Paris</small><br></blockquote>
+							<div class="row">
+								<div class="span2">
+									<a href="@routes.ApplicationUtilisateurs.getUtilisateurById(msg.getUser.getId)" class="btn btn-mini btn-primary">Afficher profil</i></a>
+								</div>
+						
+						@if(Autorisation.isAdmin()||Autorisation.isOwnerMessge(msg.getId)) {
+							<div class="span1 offset5">
+								<a href="/messages/@msg.getId/delete" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i></a>
+							</div>
+						}
+						<br /></div><br /><legend></legend>
+				}
+			
+		</div>	
+	</div>
+	
+	
+
+</div>	
+</div>
+
+</div>
+
+}

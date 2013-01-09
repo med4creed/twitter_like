@@ -7,6 +7,10 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
+ 
+/*
+	Rechercher une modification : modiff
+*/
 
 article,
 aside,
@@ -158,13 +162,21 @@ textarea {
           box-sizing: border-box;
 }
 
+/* modiff
+*/
+
 body {
-  margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  font-family: Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background-color: #ffffff;
+  padding-top:160px;
+  background-image: url("../img/back.png");
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-position: center center;
+  max-width: 1000px;
 }
 
 a {

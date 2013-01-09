@@ -1,0 +1,28 @@
+@(
+	message: String,
+	userForm :Form[Utilisateur]
+)
+
+@import helper._ 
+
+@main("Welcome to Play 2.0") {
+
+	@if(flash.containsKey("error")) {
+        <div class="alert alert-error"><strong>Erreur : </strong> @flash.get("error")</div>
+    }
+
+    <div class="well" style="margin-top:100px;"> 
+
+ 		@form(routes.Application.newUtilisateur()) {
+			<h2>Inscription</h2>
+			<input type="text" name="nom" placeholder="Nom"><br />
+			<input type="text" name="pnom" placeholder="Prenom"><br />
+			<input type="text" name="pseudo" placeholder="Choisir un pseudo"><br />
+            <input type="text" name="mail" placeholder="Adresse email"><br />
+            <input type="password" name="mdp" placeholder="Mot de passe"><br />
+            <button type="submit" class="btn btn-primary">Valider son inscription</button>
+		}
+
+	</div>
+
+}

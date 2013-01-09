@@ -29,8 +29,6 @@ public class Utilisateur extends Model {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@SequenceGenerator(name = "seq", initialValue = 100, allocationSize = 100)
-	@GeneratedValue(generator = "seq", strategy = GenerationType.SEQUENCE)
 	private long id;
 	@Required
 	@Column(length = 30, nullable = false)
@@ -43,12 +41,11 @@ public class Utilisateur extends Model {
 	private String pseudo;
 	@Required
 	@Column(nullable = false, unique = true)
-	private String mail;
+	public String mail;
 	@Required
 	@JsonIgnore
 	@Column(length = 30)
 	private String mdp;
-	@Required
 	@Temporal(TemporalType.DATE)
 	private Date dateInscription = new Date();
 
@@ -62,7 +59,6 @@ public class Utilisateur extends Model {
 	@ManyToMany(mappedBy = "members")
 	private List<Groupe> grps = new ArrayList<Groupe>();
 
-	@JsonIgnore
 	private List<Utilisateur> usersFollow = new ArrayList<Utilisateur>();
 
 	public Utilisateur() {
@@ -153,8 +149,8 @@ public class Utilisateur extends Model {
 		return usersFollow;
 	}
 
-	public void setUsersFollow(List<Utilisateur> usersFollow) {
-		this.usersFollow = usersFollow;
+	public void setUsersFollow(Utilisateur userToFollow) {
+		this.usersFollow.add(userToFollow);
 	}
 
 	// Méthodes CRUD
@@ -176,9 +172,10 @@ public class Utilisateur extends Model {
 		return find.byId(id);
 	}
 
+
 	// Update
 	public static void updateUser(Utilisateur user) {
-		find.byId(user.getId()).update(user);
+		user.update();
 	}
 
 	// Delete
@@ -208,5 +205,6 @@ public class Utilisateur extends Model {
 				+ ", dateInscription=" + dateInscription + ", msgs=" + msgs
 				+ ", grps=" + grps + "]";
 	}
+
 
 }

@@ -25,16 +25,19 @@ public class Global extends GlobalSettings {
 			Ebean.save(all.get("utilisateurs"));
 		}
 		
+		
 		if (Ebean.find(Groupe.class).findRowCount() == 0) {
 			Logger.info("OK pour les groupes");
 			Ebean.save(all.get("groupes"));
 		}
+		
 		Logger.info("avant messages");
 		Logger.info("count messages"+Ebean.find(Message.class).findRowCount());
 		if (Ebean.find(Message.class).findRowCount() == 0) {
 			Logger.info("OK pour les messages");
 			Ebean.save(all.get("messages"));
 		}
+		
 		
 		
 //		Utilisateur user = Utilisateur.findUserById(1);

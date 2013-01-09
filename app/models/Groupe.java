@@ -29,7 +29,6 @@ public class Groupe extends Model {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
 	private long id;
 	@Required
 	@Column(length = 30, nullable = false)
@@ -103,8 +102,7 @@ public class Groupe extends Model {
 
 	// Méthodes CRUD
 
-	public static Finder<Long, Groupe> find = new Finder(Long.class,
-			Groupe.class);
+	public static Finder<Long, Groupe> find = new Finder(Long.class,Groupe.class);
 
 	// Create
 	public static void createGroupe(Groupe grp) {
@@ -129,5 +127,16 @@ public class Groupe extends Model {
 	public static void deleteGroupe(Long id) {
 		find.ref(id).delete();
 	}
+
+	@Override
+	public String toString() {
+		return "Groupe [id=" + id + ", nomGroupe=" + nomGroupe + ", dateCreation="
+				+ dateCreation + ", msgs=" + msgs + ", members=" + members
+				+ ", userAdmin=" + userAdmin + "]";
+	}
+	
+
+	
+
 
 }

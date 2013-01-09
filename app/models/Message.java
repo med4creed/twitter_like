@@ -29,16 +29,14 @@ public class Message extends Model {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@SequenceGenerator(name = "seq", initialValue = 100, allocationSize = 100)
-	@GeneratedValue(generator = "seq", strategy = GenerationType.SEQUENCE)
 	private long id;
 	@Required
 	@Column(length = 255, nullable = true)
 	private String msg;
-	@Required
+	//@Required
 	@Temporal(TemporalType.DATE)
 	private Date dateCreation = new Date();
-	@Required
+	//@Required
 	@JsonManagedReference
 	@ManyToOne
 	private Utilisateur user;

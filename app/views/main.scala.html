@@ -22,9 +22,15 @@
 			
 				<div class="pull-right">
 					<ul class="nav">
-						<li><a href="/messages">Messages</a></li>
-						<li><a href="/utilisateurs">Utilisateur</a></li>
-						<li><a href="/logout">Déconnexion</a></li>
+					
+					@if(ctx.session().get("mail") != null) {
+            			<li><a href="/logout">Déconnexion</a></li>
+        			}
+        			
+        			@if(ctx.session().get("mail") == null) {
+            			<li><a href="/login">Connexion</a></li>
+        			}
+
 					</ul>
 				</div>
 			</div>

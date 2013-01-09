@@ -10,11 +10,17 @@ import play.mvc.Result;
 public class ApplicationAuthentification extends Controller {
 
 	static Form<Login> loginForm = form(Login.class);
+	static Form<Utilisateur> userForm = form(Utilisateur.class);
 
 	public static Result index() {
-		return ok(views.html.login.render("Veuillez vous identifier svp!!!",
+		return ok(views.html.login.render("Veuillez vous identifier !",
 				loginForm));
-		// return ok("boooooooooooooom");
+	}
+	
+	
+	public static Result index2() {
+		return ok(views.html.signup.render("Veuillez vous identifier !", userForm));
+
 	}
 
 	public static boolean validationLogin(String email, String mdp) {
@@ -27,19 +33,19 @@ public class ApplicationAuthentification extends Controller {
 	// login
 	public static Result login() {
 		Form<Login> filledForm = loginForm.bindFromRequest();
+		
 		Login login = filledForm.get();
 		Utilisateur currentUser = null;
 		if (!validationLogin(login.getMail(), login.getMdp())) {
-			return badRequest(views.html.login.render(
-					"Erreur d'authentification, réessayez svp!!!", loginForm));
+			flash("error", "Mauvais identidiants");
+			return redirect(routes.ApplicationAuthentification.index());
+			
 		} else {
 			currentUser = Utilisateur.findByLogin(login.getMail(),
 					login.getMdp());
 			flash("success", "Vous êtes connecté!!!");
 			session().put("mail", currentUser.getMail());
 			session().put("id", Long.toString(currentUser.getId()));
-			
-
 		}
 		return redirect(routes.ApplicationMessages.getAllMessages());
 	}
@@ -47,7 +53,7 @@ public class ApplicationAuthentification extends Controller {
 	// logout
 	public static Result logout() {
 		session().clear();
-		flash("success", "Vous etes déconnecté!!!");
+		flash("success", "Vous etes déconnecté.");
 		return redirect(routes.ApplicationAuthentification.login());
 	}
 
@@ -88,3 +94,4 @@ public class ApplicationAuthentification extends Controller {
 	}
 
 }
+
