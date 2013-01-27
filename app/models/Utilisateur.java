@@ -56,7 +56,8 @@ public class Utilisateur extends Model {
 	@OneToMany(mappedBy = "userAdmin", cascade = CascadeType.ALL)
 	private List<Groupe> adminGrps = new ArrayList<Groupe>();
 	@JsonBackReference
-	@ManyToMany(mappedBy = "members")
+//	@ManyToMany(mappedBy = "members")
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Groupe> grps = new ArrayList<Groupe>();
 
 	private List<Utilisateur> usersFollow = new ArrayList<Utilisateur>();
