@@ -41,7 +41,7 @@ public class Groupe extends Model {
 	private List<Message> msgs = new ArrayList<Message>();
 	
 	@JsonManagedReference
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "grps",cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	private List<Utilisateur> members = new ArrayList<Utilisateur>();
 	
 	@JsonManagedReference
